@@ -1,4 +1,4 @@
-import { Card, CardContent } from "../components/ui/card"
+import { Card } from "../components/ui/card"
 
 interface Repo {
   id: number
@@ -7,26 +7,24 @@ interface Repo {
   description: string
 }
 
-export const RepoList = ({ repos }: { repos: Repo[] }) => {
+interface Props {
+  repos: Repo[]
+  onSelect: (repoName: string) => void
+}
+
+export const RepoList = ({ repos, onSelect }: Props) => {
   return (
     <div className="grid grid-cols-1 gap-4">
-      {repos.map((repo) => (
-        <Card key={repo.id}>
-          <CardContent className="p-4">
-            <a
-              href={repo.html_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 font-semibold text-lg hover:underline"
-            >
-              {repo.name}
-            </a>
-            <p className="text-sm text-gray-600 mt-1">
-              {repo.description || "No description"}
-            </p>
-          </CardContent>
-        </Card>
-      ))}
+      {repos.length > 0 && (
+        <ul>
+          {repos.map(repo => (
+            <Card key={repo.id} className="p-4 cursor-pointer hover:shadow-lg" onClick={() => onSelect(repo.name)}>
+              <h2 className="text-lg font-semibold">{repo.name}</h2>
+              <p className="text-gray-600">{repo.description}</p>
+            </Card>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }
